@@ -31,7 +31,7 @@ export default function SlideContainer( {children} ) {
     <div 
       ref={container} 
       onWheel={handleWheel} 
-      className={`w-full transition duration-${delay}`}
+      className={`w-full duration-1000`}
       style={{transform : `translateY(${slideIndex * 100}vh)`}}
     >
       {children}
