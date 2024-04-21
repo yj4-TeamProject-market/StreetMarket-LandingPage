@@ -1,3 +1,17 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  @font-face {
+    font-family: "Joongnajoche";
+    src: url(../../public/fonts/중나좋체\ Light.ttf);
+    font-weight: 400;
+  }
+
+  @font-face {
+    font-family: "Joongnajoche";
+    src: url(../../public/fonts/중나좋체\ Medium.ttf);
+    font-weight: 700;
+  }
+}
