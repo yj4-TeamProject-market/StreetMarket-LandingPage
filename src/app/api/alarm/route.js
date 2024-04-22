@@ -1,6 +1,13 @@
 import { connectToDatabase } from "@/utils/db";
 import { NextResponse } from "next/server";
 import crypto from 'crypto';
+import { SolapiMessageService } from "solapi";
+
+const api_key = 'NCSJTUHVWWQ0EWKT'; 
+const api_secret = 'AU16IKRS7CVUPXXWOWP3ECGMEFBB7VCQ';
+const templateId = "KA01TP240418051004681cZARutDMsxv";
+const pfid = "KA01PF22041206411o33TFWW9Sl71Ppp";
+const messageService = new SolapiMessageService(api_key, api_secret);
 
 // 암호화를 위한 키
 const encryptionKey = crypto.createHash('sha256').update("mySecretKey123").digest('hex').substring(0, 32);
@@ -27,7 +34,7 @@ export async function POST(req, res) {
     const {name, mobile} = data;
     try {
         const encryptedMobile = encryptPhoneNumber(mobile); // 암호화
-        // console.log(decryptPhoneNumber(encryptedMobile)); // 복호화
+        // const decryptedMobile = encryptPhoneNumber(encryptedMobile); // 복호화
         const [results, fields] = await connection.query(`SELECT * FROM alarm WHERE mobile = ?`, [encryptedMobile]);
         if (results.length > 0) {
             connection.end();
@@ -36,7 +43,20 @@ export async function POST(req, res) {
             try {
                 await connection.query(`INSERT INTO alarm (name, mobile) VALUES (?, ?)`, [name, encryptedMobile]);
                 connection.end();
-                return NextResponse.json({ message: "신청이 완료되었습니다." });
+                const response = await messageService.send({
+                    to: mobile,
+                    from: "계정에서 등록한 발신번호 입력", // 발신번호를 정확하게 입력해주세요.
+                    kakaoOptions: {
+                        pfId: pfid,
+                        templateId: templateId,
+                        variables: name ? {
+                            "#{name}": name,
+                            "#{region}" : "동성로"
+                        } : {},
+                        disableSms: false // 필요에 따라 disableSms 옵션 사용
+                    }
+                });
+                return NextResponse.json({ message: "신청이 완료되었습니다.", data: response });
             } catch (err) {
                 console.log(err);
                 connection.end();
