@@ -33,8 +33,8 @@ export default function UserForm() {
     }
   };
   return (
-    <main className="w-full">
-      <section className="w-full max-w-5xl my-0 mx-auto p-5">
+    <div className="w-full">
+      <section className="w-full max-w-5xl my-0 mx-auto py-5">
         <form className="flex flex-col gap-4 bg-black w-full max-w-96 p-5 rounded-lg" onSubmit={handleSubmit(onSubmit)}>
           {/* --------------------이름 input-------------------- */}
           <input
@@ -93,6 +93,6 @@ export default function UserForm() {
           )}
         </form>
       </section>
-    </main>
+    </div>
   );
 }
