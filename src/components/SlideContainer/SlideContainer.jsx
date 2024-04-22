@@ -18,10 +18,10 @@ export default function SlideContainer( {children, slideIndex, setSlideIndex} ) 
   },[container])
 
   const onScrollChange = (event) => {
-    if(event.deltaY < 0 && slideIndex >= 0) {
-      setSlideIndex(prev => prev-1);
-    } else if(event.deltaY > 0 && slideIndex < slideLength-1) {
-      setSlideIndex(prev => prev+1);
+    if(event.deltaY < 0 && slideIndex > 0) {
+      setSlideIndex(slideIndex - 1);
+    } else if(event.deltaY > 0 && slideIndex < slideLength) {
+      setSlideIndex(slideIndex + 1);
     }
   }
   const handleWheel = throttel(onScrollChange, delay, inThrottle);
