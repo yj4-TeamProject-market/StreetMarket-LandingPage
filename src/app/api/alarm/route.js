@@ -43,6 +43,7 @@ export async function POST(req, res) {
             try {
                 await connection.query(`INSERT INTO alarm (name, mobile) VALUES (?, ?)`, [name, encryptedMobile]);
                 connection.end();
+                // 알림톡 부분
                 const response = await messageService.send({
                     to: mobile,
                     from: "계정에서 등록한 발신번호 입력", // 발신번호를 정확하게 입력해주세요.
